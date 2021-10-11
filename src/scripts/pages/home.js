@@ -125,7 +125,7 @@ export default class Home {
 
   scrollup() {
     const elSwiper = this.swiper;
-
+    //active only on mobile to go to the previous slide when you drag/pan scroll up at the top
     const touchGesture = new Hammer(window, {
       touchAction: 'auto'
     });
@@ -140,23 +140,31 @@ export default class Home {
     });
 
     window.addEventListener('wheel', (e) => {
-      if (e.view.scrollY === 0) {
+      if (e.view.scrollY === 0)
+      {
         if (e.deltaY < 0) {
           setTimeout(() => {
             return elSwiper.slidePrev();
           }, 150);
         }
       }
+      /* The bug is here in the detection of Swiping left and right
+      // this is used only on the desktop so we can get rid of it - on mobile we have the pan behaviur captured by touchGesture
+      // the problem appaars only with trackpads where the deltaX or delta Y isn't as precise than with a mouseWheel
+      // because when you are moving the mouse on a trackpad you are always going a bit in all directions
+      // normalizing and chekcing which among all directions is the strongest works up to a certain point, 
+      // because if you keep moving the mouse will still capture some different directions...
+      // there are possible solutions but since this is not an important interaction we can safely delete it */
 
-      if (e.deltaX > 0) {
-        setTimeout(() => {
-          elSwiper.slideNext();
-        }, 150);
-      } else if (e.deltaX < 0) {
-        setTimeout(() => {
-          elSwiper.slidePrev();
-        }, 150);
-      }
+      // if (e.deltaX > 0) {
+      //   setTimeout(() => {
+      //     elSwiper.slideNext();
+      //   }, 150);
+      // } else if (e.deltaX < 0) {
+      //   setTimeout(() => {
+      //     elSwiper.slidePrev();
+      //   }, 150);
+      // }
     });
   }
 
